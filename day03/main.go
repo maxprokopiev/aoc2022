@@ -24,16 +24,16 @@ func Solve2(bagGroups [][]string) int {
 }
 
 func Intersect(bags []string) int {
-	items := make(map[int]int)
+	items := make(map[rune]int)
 	for i, bag := range bags {
 		for _, item := range bag {
-			if (items[int(item)] == 0) && (i == 0) {
-				items[int(item)] = 1
-			} else if items[int(item)] == i {
-				items[int(item)] += 1
+			if (items[item] == 0) && (i == 0) {
+				items[item] = 1
+			} else if items[item] == i {
+				items[item] += 1
 			}
 
-			if items[int(item)] == len(bags) {
+			if items[item] == len(bags) {
 				return Convert(item)
 			}
 		}
