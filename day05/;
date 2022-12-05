@@ -1,0 +1,93 @@
+package main
+
+import (
+	"fmt"
+	"regexp"
+	"strconv"
+	"strings"
+)
+
+func Reverse(s []string) []string {
+	for i, j := 0, len(s)-1; i < j; i, j = i+1, j-1 {
+		s[i], s[j] = s[j], s[i]
+	}
+
+	return s
+}
+
+func Solve1(ss [][]string, ms [][]int) string {
+	for _, m := range ms {
+		n := m[0]
+		from := m[1] - 1
+		to := m[2] - 1
+
+		taken := make([]string, len(ss[from][:n]))
+		copy(taken, ss[from][:n])
+		fmt.Printf("taking %v\n", taken)
+		oldTo := make([]string, len(ss[to]))
+		copy(oldTo, ss[to])
+		newTo := make([]string, 0)
+		newTo = append(newTo, Reverse(taken)...)
+		newTo = append(newTo, oldTo...)
+		ss[to] = newTo
+
+		newFrom := make([]string, len(ss[from][n:]))
+		copy(newFrom, ss[from][n:])
+		ss[from] = newFrom
+
+		fmt.Println(ss)
+	}
+
+	result := ""
+	for _, s := range ss {
+		result += s[0]
+	}
+
+	return result
+}
+
+func ReadInput(input string) ([][]string, [][]int) {
+	var r = regexp.MustCompile(`(?:(\[[A-Z]\])|\s{3})\s(?:(\[[A-Z]\])|\s{3})\s(?:(\[[A-Z]\])|\s{3})`)
+
+	crates := strings.Split(input, "\n\n")[0]
+	moves := strings.Split(input, "\n\n")[1]
+
+	size := len(strings.Split(crates, "\n"))
+	ss := make([][]string, size-1)
+	for i, _ := range ss {
+		ss[i] = make([]string, 0)
+	}
+
+	for _, tier := range strings.Split(crates, "\n") {
+		if string(tier[1]) == "1" {
+			break
+		}
+		stacks := r.FindStringSubmatch(tier)[1:]
+		for j, crate := range stacks {
+			if crate != "" {
+				ss[j] = append(ss[j], string(crate[1]))
+			}
+		}
+	}
+
+	var mr = regexp.MustCompile(`move (\d+) from (\d+) to (\d+)`)
+	ms := make([][]int, len(strings.Split(moves, "\n")))
+	for i, move := range strings.Split(moves, "\n") {
+		if move == "" {
+			break
+		}
+		fmt.Println(move)
+		fmt.Println(mr.FindStringSubmatch(move))
+		ns := mr.FindStringSubmatch(move)[1:]
+		c, _ := strconv.Atoi(ns[0])
+		j, _ := strconv.Atoi(ns[1])
+		k, _ := strconv.Atoi(ns[2])
+
+		ms[i] = []int{c, j, k}
+	}
+
+	return ss, ms
+}
+
+func main() {
+}
