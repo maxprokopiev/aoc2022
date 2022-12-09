@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"fmt"
 	"strconv"
 	"strings"
 )
@@ -138,4 +139,5 @@ func BuildMap(input string) [][]int {
 }
 
 func main() {
+	fmt.Println("test")
 }
