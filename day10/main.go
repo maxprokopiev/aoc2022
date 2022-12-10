@@ -14,9 +14,9 @@ func Draw(i int, x int) {
 		fmt.Println()
 	}
 	if ((x - 1) == p) || (x == p) || ((x + 1) == p) {
-		fmt.Print("#")
+		fmt.Print("🟩")
 	} else {
-		fmt.Print(".")
+		fmt.Print("⬛")
 	}
 }
 
